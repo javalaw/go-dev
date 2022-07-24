@@ -1,0 +1,22 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  workspace:
+    tty: true
+    user: ${USERNAME}
+    build: 
+      context: ./golang/
+      dockerfile: base.Dockerfile
+      args:
+        - VARIANT=${GO_VERSION}
+        - USERNAME=${USERNAME}
+    working_dir: /workspace
+    cap_add:
+      - "SYS_PTRACE"
+    security_opt:
+      - "seccomp:unconfined"
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+      - "2222:2222"
+    volumes:
+      - ${PROJECT_PATH}:/workspace
